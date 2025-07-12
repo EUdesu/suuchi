@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="simyu.css">
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h1>二分法とニュートン法の比較</h1>
+    <div class="motodeka">
+        <div class="deka">
+            <div class="sikaku">
+                <p>初期値</p>
+                <p>二分法　a:<input type="text"></p>
+                <p>二分法　b:<input type="text"></p>
+                <p>ニュートン法　b:<input type="text"></p>
+            </div>
+            <div>
+                <button>スタート</button>
+                <button>ストップ</button>
+            </div>
+            <div class="sikaku">
+                <p>近似解</p>
+                <p>二分法　a:<input type="text"></p>
+                <p>ニュートン法　b:<input type="text"></p>
+            </div>
+            <div class="sikaku">
+                <p>反復回数</p>
+                <p>二分法　a:<input type="text"></p>
+                <p>ニュートン法　b:<input type="text"></p>
+            </div>
+        </div>
+        <div class="gura">
+            <h4>y = x² - 2x + 1 のグラフ</h4>
+            <canvas id="gura1" width="600" height="400"></canvas>
+            <canvas id="gura2" width="600" height="400"></canvas>
+        </div>          
+          <script>
+            // グラフ描画用関数を作る
+            function drawChart(canvasId) {
+              const ctx = document.getElementById(canvasId).getContext('2d');
+          
+              const xValues = [];
+              const yValues = [];
+              for (let x = -5; x <= 5; x += 1) {
+                xValues.push(x.toFixed(2));
+                yValues.push(x * x * x + x + 1);
+              }
+          
+              new Chart(ctx, {
+                type: 'line',
+                data: {
+                  labels: xValues,
+                  datasets: [{
+                    label: 'y = x³ + x + 1',
+                    data: yValues,
+                    borderColor: 'blue',
+                    fill: false,
+                    pointRadius: 0,
+                    borderWidth: 2,
+                  }]
+                },
+                options: {
+                  responsive: false,
+                  scales: {
+                    x: { title: { display: true, text: 'x' } },
+                    y: { title: { display: true, text: 'y' } }
+                  }
+                }
+              });
+            }
+          
+            // 2つのcanvasに対して描画実行
+            drawChart('gura1');
+            drawChart('gura2');
+          </script>
+          
+
+
+
+    </div>
+    
+  </body>
+</html>

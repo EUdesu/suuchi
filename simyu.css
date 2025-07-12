@@ -1,0 +1,28 @@
+@charset "utf-8";
+.sikaku {
+    border: 1px solid black;
+    padding: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 300px;  /* 幅を300pxに */
+    height: 180px; /* 高さを200pxに */
+  }
+
+  .motodeka  {
+    display: flex;
+    gap: 20px;             /* 要素間のスペース */
+    align-items: flex-start; /* 縦方向の揃え方（必要に応じて調整） */
+  }
+  #gura1 {
+    background-color: #f0f8ff; /* 例えば薄い青 */
+    border: 1px solid black;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  #gura2 {
+    background-color: #fff0f5; /* 例えば薄いピンク */
+    border: 1px solid black;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
