@@ -4,7 +4,7 @@
     padding: 0px;
     margin-top: 10px;
     margin-bottom: 10px;
-    width: 300px;  /* 幅を300pxに */
+    width: 350px;  /* 幅を300pxに */
     height: 180px; /* 高さを200pxに */
   }
 
@@ -12,6 +12,12 @@
     display: flex;
     gap: 20px;             /* 要素間のスペース */
     align-items: flex-start; /* 縦方向の揃え方（必要に応じて調整） */
+  }
+  .gura {
+    display: flex;
+    flex-direction: column;  /* ← ここで縦並びにする */
+    gap: 20px;               /* グラフ間の余白 */
+    align-items: center;     /* 横方向の中央揃え */
   }
   #gura1 {
     background-color: #f0f8ff; /* 例えば薄い青 */

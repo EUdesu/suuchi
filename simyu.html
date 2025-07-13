@@ -7,78 +7,154 @@
   </head>
   <body>
     <h1>二分法とニュートン法の比較</h1>
+    <p>数式:f(x) =<input type="text" id="su" value="x*x"></p>
     <div class="motodeka">
         <div class="deka">
             <div class="sikaku">
                 <p>初期値</p>
-                <p>二分法　a:<input type="text"></p>
-                <p>二分法　b:<input type="text"></p>
-                <p>ニュートン法　b:<input type="text"></p>
+                <p>二分法　a:<input type="number" id="aa" value="1"></p>
+                <p>二分法　b:<input type="number" id="bb" value="-1"></p>
+                <p>ニュートン法　b:<input type="number" id="syo" value="1"></p>
             </div>
             <div>
-                <button>スタート</button>
+                <button onclick="drawFromInput()">スタート</button>
                 <button>ストップ</button>
             </div>
             <div class="sikaku">
                 <p>近似解</p>
-                <p>二分法　a:<input type="text"></p>
-                <p>ニュートン法　b:<input type="text"></p>
+                <p>二分法　a:<input type="number"></p>
+                <p>ニュートン法　b:<input type="number"></p>
             </div>
             <div class="sikaku">
                 <p>反復回数</p>
-                <p>二分法　a:<input type="text"></p>
-                <p>ニュートン法　b:<input type="text"></p>
+                <p>二分法　a:<input type="number"></p>
+                <p>ニュートン法　b:<input type="number"></p>
             </div>
         </div>
         <div class="gura">
-            <h4>y = x² - 2x + 1 のグラフ</h4>
             <canvas id="gura1" width="600" height="400"></canvas>
             <canvas id="gura2" width="600" height="400"></canvas>
-        </div>          
+        </div>
+                 
           <script>
-            // グラフ描画用関数を作る
-            function drawChart(canvasId) {
-              const ctx = document.getElementById(canvasId).getContext('2d');
-          
-              const xValues = [];
-              const yValues = [];
-              for (let x = -5; x <= 5; x += 1) {
-                xValues.push(x.toFixed(2));
-                yValues.push(x * x * x + x + 1);
-              }
-          
-              new Chart(ctx, {
-                type: 'line',
-                data: {
-                  labels: xValues,
-                  datasets: [{
-                    label: 'y = x³ + x + 1',
-                    data: yValues,
-                    borderColor: 'blue',
-                    fill: false,
-                    pointRadius: 0,
-                    borderWidth: 2,
-                  }]
-                },
-                options: {
-                  responsive: false,
-                  scales: {
-                    x: { title: { display: true, text: 'x' } },
-                    y: { title: { display: true, text: 'y' } }
-                  }
+                let chart1 = null;
+                let chart2 = null;
+                // グラフ描画用関数を作る
+                function drawChart(canvasId) {
+                    const ctx = document.getElementById(canvasId).getContext('2d');
+                    const su = document.getElementById("su").value;
+                
+                    const xValues = [];
+                    const yValues = [];
+                    for (let x = -5; x <= 5; x += 1) {
+                        xValues.push(x.toFixed(2));
+                        const y = (function(x){
+                            return eval(su);
+                        })(x);
+                        yValues.push(y);
+                    }
+                    // 入力された初期値を取得
+                    const aa = Number(document.getElementById("aa").value);
+                    const bb = Number(document.getElementById("bb").value);
+                    const syo = Number(document.getElementById("syo").value);
+                    
+                    /** 線のデータをscatter形式に変更 **/
+                    const linePoints = [];
+                    for (let x = -5; x <= 5; x += 0.1) {
+                        linePoints.push({ x: x, y: eval(su) });
+                    }
+                    /** 点のy座標を正しく計算 **/
+                    const aa_y = eval(su.replace(/x/g, `(${aa})`));
+                    const bb_y = eval(su.replace(/x/g, `(${bb})`));
+                    const syo_y = eval(su.replace(/x/g, `(${syo})`));
+
+                    if(canvasId == "gura1"){
+                        if(chart1) chart1.destroy();
+                        chart1 = new Chart(ctx, {
+                            /** scatter形式に変更し、showLine: true で曲線に **/
+                            type: 'scatter',
+                            data: {
+                                datasets: [
+                                    {
+                                        label: 'y = ' + su,
+                                        data: linePoints,
+                                        showLine: true,
+                                        borderColor: 'blue',
+                                        backgroundColor: 'blue',
+                                        fill: false,
+                                        pointRadius: 0,
+                                        borderWidth: 2,
+                                    },
+                                    {
+                                        label: '二分法の点',
+                                        data: [
+                                            { x: aa, y: aa_y },
+                                            { x: bb, y: bb_y }
+                                        ],
+                                        backgroundColor: 'red',
+                                        pointRadius: 6,
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: false,
+                                scales: {
+                                    x: { title: { display: true, text: 'x' } },
+                                    y: { title: { display: true, text: 'y' } }
+                                }
+                            }
+                        });
+                    }
+                    if(canvasId == "gura2"){
+                        if(chart2) chart2.destroy();
+                        chart2 = new Chart(ctx, {
+                            /** scatter形式に変更し、showLine: true で曲線に **/
+                            type: 'scatter',
+                            data: {
+                                datasets: [
+                                    {
+                                        label: 'y = ' + su,
+                                        data: linePoints,
+                                        showLine: true,
+                                        borderColor: 'blue',
+                                        backgroundColor: 'blue',
+                                        fill: false,
+                                        pointRadius: 0,
+                                        borderWidth: 2,
+                                    },
+                                    {
+                                        label: 'ニュートン法の点',
+                                        data: [
+                                            { x: syo, y: syo_y }
+                                        ],
+                                        backgroundColor: 'green',
+                                        pointRadius: 6,
+                                    }
+                                ]
+                            },
+                            /**/
+                            options: {
+                                responsive: false,
+                                scales: {
+                                    x: { title: { display: true, text: 'x' } },
+                                    y: { title: { display: true, text: 'y' } }
+                                }
+                            }
+                        });
+                    }
                 }
-              });
-            }
-          
-            // 2つのcanvasに対して描画実行
-            drawChart('gura1');
-            drawChart('gura2');
+                function drawFromInput() {
+                    
+                    const aa = Number(document.getElementById("aa").value);
+                    const bb = Number(document.getElementById("bb").value);
+                    const syo = Number(document.getElementById("syo").value);
+                        
+                    // ここでa,b,x0を使って計算や描画をする
+                    console.log(aa,bb, syo);
+                    drawChart("gura1");
+                    drawChart("gura2");
+                }                
           </script>
-          
-
-
-
     </div>
-    
   </body>
 </html>
